@@ -229,6 +229,36 @@ tags: []
     expect(post!.content.trim()).toBe("");
   });
 
+  it("logs a warning when frontmatter YAML is malformed", () => {
+    const warnings: string[] = [];
+    const original = console.warn;
+    console.warn = (...args: unknown[]) => {
+      warnings.push(args.join(" "));
+    };
+    try {
+      const filePath = path.join(tmpDir, "bad-yaml.md");
+      // Unclosed quote / bad indentation makes gray-matter throw on parse.
+      fs.writeFileSync(
+        filePath,
+        `---
+title: "unterminated
+  tags: [oops
+---
+
+Body.
+`
+      );
+      const store = createPostStore(tmpDir);
+      const post = store.loadFile(filePath);
+      expect(post).toBeNull();
+      expect(
+        warnings.some((w) => w.includes("failed to load") && w.includes(filePath))
+      ).toBe(true);
+    } finally {
+      console.warn = original;
+    }
+  });
+
   it("handles completely empty file", () => {
     const filePath = path.join(tmpDir, "empty.md");
     fs.writeFileSync(filePath, "");

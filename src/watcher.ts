@@ -28,13 +28,17 @@ export function createWatcher(
 
     watcher.on("add", (filePath: string) => {
       console.log(`[watcher] added: ${filePath}`);
-      store.loadFile(filePath);
+      if (!store.loadFile(filePath)) {
+        console.warn(`[watcher] failed to load added file: ${filePath}`);
+      }
       rebuildIndex();
     });
 
     watcher.on("change", (filePath: string) => {
       console.log(`[watcher] changed: ${filePath}`);
-      store.loadFile(filePath);
+      if (!store.loadFile(filePath)) {
+        console.warn(`[watcher] failed to load changed file: ${filePath}`);
+      }
       rebuildIndex();
     });
 

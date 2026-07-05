@@ -42,7 +42,11 @@ export function createPostStore(contentDir: string): PostStore {
 
       posts.set(filePath, post);
       return post;
-    } catch {
+    } catch (err) {
+      // Do not silently drop content: surface the file and reason so an
+      // operator can see why a post disappeared (e.g. a YAML typo).
+      const message = err instanceof Error ? err.message : String(err);
+      console.warn(`[content] failed to load ${filePath}: ${message}`);
       return null;
     }
   }
