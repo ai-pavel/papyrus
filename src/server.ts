@@ -52,7 +52,7 @@ export function createApp(store: PostStore, searchIndex: SearchIndex) {
 
   // Health check
   app.get("/health", (_req, res) => {
-    res.json({ status: "ok", service: "markdown-cms" });
+    res.json({ status: "ok", service: "papyrus" });
   });
 
   // Root redirect

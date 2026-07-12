@@ -154,7 +154,7 @@ describe("Express App", () => {
       const res = await request(app).get("/health");
       expect(res.status).toBe(200);
       expect(res.type).toBe("application/json");
-      expect(res.text).toBe('{"status":"ok","service":"markdown-cms"}');
+      expect(res.text).toBe('{"status":"ok","service":"papyrus"}');
     });
   });
 
