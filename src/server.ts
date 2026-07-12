@@ -2,6 +2,7 @@ import express from "express";
 import type { PostStore } from "./content.js";
 import type { SearchIndex } from "./search.js";
 import { renderPost, renderPostList } from "./renderer.js";
+import { buildFeed } from "./feed.js";
 
 export function createApp(store: PostStore, searchIndex: SearchIndex) {
   const app = express();
@@ -40,6 +41,13 @@ export function createApp(store: PostStore, searchIndex: SearchIndex) {
       return;
     }
     res.type("html").send(renderPost(post));
+  });
+
+  // RSS feed
+  app.get("/feed.xml", (req, res) => {
+    const baseUrl = `${req.protocol}://${req.get("host")}`;
+    const xml = buildFeed(store.getAll(), { title: "All Posts", baseUrl });
+    res.type("application/rss+xml").send(xml);
   });
 
   // Health check

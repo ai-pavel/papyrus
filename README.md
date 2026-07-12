@@ -13,6 +13,7 @@ A flat-file content management system built with TypeScript and Node.js. Content
 - Tag-based filtering
 - File watcher for live preview
 - Clean HTML output with minimal styling
+- RSS 2.0 feed
 
 ## Getting Started
 
@@ -31,6 +32,7 @@ The server starts at `http://localhost:3000` by default.
 | `GET /posts/:slug` | View a single post |
 | `GET /search?q=query` | Full-text search |
 | `GET /tags/:tag` | Filter posts by tag |
+| `GET /feed.xml` | RSS 2.0 feed of all posts |
 
 ## Content
 

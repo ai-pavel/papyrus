@@ -175,4 +175,15 @@ describe("Express App", () => {
       expect(res.text).toContain("Posts tagged &quot;nonexistent&quot;");
     });
   });
+  describe("GET /feed.xml", () => {
+    it("returns an RSS feed of all posts", async () => {
+      const app = createApp(store, searchIndex);
+      const res = await request(app).get("/feed.xml");
+      expect(res.status).toBe(200);
+      expect(res.type).toBe("application/rss+xml");
+      expect(res.text).toContain("<rss version=\"2.0\">");
+      expect(res.text).toContain("First Post");
+      expect(res.text).toContain("Second Post");
+    });
+  });
 });
